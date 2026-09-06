@@ -3,11 +3,15 @@ package com.slotwise.service;
 import com.slotwise.dto.CreateTenantRequest;
 import com.slotwise.dto.TenantResponse;
 import com.slotwise.entity.Tenant;
+import com.slotwise.exception.DuplicateResourceException;
+import com.slotwise.exception.ResourceNotFoundException;
 import com.slotwise.repository.TenantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 
 
 @Service
@@ -18,7 +22,7 @@ public class TenantService {
 
     public TenantResponse createTenant(CreateTenantRequest request) {
         if (tenantRepository.existsBySlug(request.getSlug())) {
-            throw new IllegalArgumentException("Tenant slug already in use");
+            throw new DuplicateResourceException("Tenant slug already in use");
         }
 
         Tenant tenant = new Tenant();
@@ -31,7 +35,7 @@ public class TenantService {
 
     public TenantResponse getTenantById(Long id) {
         Tenant tenant = tenantRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tenant not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found"));
         return toResponse(tenant);
     }
 
