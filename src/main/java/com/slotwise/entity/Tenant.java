@@ -18,6 +18,9 @@ public class Tenant {
 
     private LocalDateTime createdAt;
 
+    @Column(nullable = false, unique = true)
+    private String slug;
+
     @OneToMany(mappedBy = "tenant")
     private List<User> users;
 
