@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/tenants")
 @RequiredArgsConstructor
 public class TenantController {
-
+ 
     private final TenantService tenantService;
 
     @PostMapping
