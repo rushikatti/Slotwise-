@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+Add-Content .gitignore "test-helpers.ps1"output.log
+test-helpers.ps1

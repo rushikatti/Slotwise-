@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
+
+
 
 @RestController
 @RequestMapping("/api/v1/tenants")
@@ -21,6 +25,7 @@ public class TenantController {
     private final TenantService tenantService;
 
     @PostMapping
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<TenantResponse>> createTenant(
             @Valid @RequestBody CreateTenantRequest request) {
         TenantResponse response = tenantService.createTenant(request);
@@ -28,13 +33,17 @@ public class TenantController {
                 .body(ApiResponse.success(response));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<TenantResponse>> getTenant(@PathVariable Long id) {
-        TenantResponse response = tenantService.getTenantById(id);
-        return ResponseEntity.ok(ApiResponse.success(response));
-    }
+  
+@GetMapping("/{id}")
+
+@PreAuthorize("hasRole('SUPER_ADMIN') or #id == principal.tenantId()")
+public ResponseEntity<?> getTenant(@PathVariable Long id) {
+    TenantResponse response = tenantService.getTenantById(id);
+    return ResponseEntity.ok(ApiResponse.success(response));
+}
 
     @GetMapping
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<List<TenantResponse>>> listTenants() {
         List<TenantResponse> responses = tenantService.getAllTenants();
         return ResponseEntity.ok(ApiResponse.success(responses));
