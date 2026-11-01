@@ -33,6 +33,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
+        @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Map<String, Object>> handleBadRequest(BadRequestException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("data", null);
+        body.put("error", ex.getMessage());
+        body.put("success", false);
+        body.put("timestamp", LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ApiResponse<Object>> handleDuplicate(DuplicateResourceException ex) {
         return ResponseEntity
