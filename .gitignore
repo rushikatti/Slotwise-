@@ -36,3 +36,4 @@ Add-Content .gitignore "test-helpers.ps1"output.log
 test-helpers.ps1
 
 Add-Content .gitignore "test.log"test.log
+test.log
